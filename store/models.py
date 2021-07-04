@@ -16,6 +16,9 @@ class Category(models.Model):
     slug = models.SlugField(verbose_name=_("Category safe URL"), max_length=255, unique=True)
     is_active = models.BooleanField(default=True)
 
+    def __str__(self):
+        return self.name
+
 
 class Product(models.Model):
     """
@@ -89,5 +92,10 @@ class Product(models.Model):
         max_digits=6,
         decimal_places=2,
     )
+    image = models.ImageField(upload_to='{category}/{product}/'.format(category=category.__str__(), product=name),
+                              default='no_photo.jpg')
     created_at = models.DateTimeField(_("Created at"), auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
+
+    def __str__(self):
+        return self.name
